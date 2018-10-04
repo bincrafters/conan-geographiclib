@@ -58,5 +58,3 @@ class GeographiclibConan(ConanFile):
 
     def package_info(self):
         self.cpp_info.libs = tools.collect_libs(self)
-        if self.settings.os == "Windows" and self.options.shared:
-            self.cpp_info.libs = ["Geographic-i"]
