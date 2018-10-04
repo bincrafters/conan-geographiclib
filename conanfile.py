@@ -53,7 +53,7 @@ class GeographiclibConan(ConanFile):
         cmake = self.configure_cmake()
         cmake.install()
         # there is no option to disable subdirectories
-        for folder in ["share", os.path.join("lib", "python"), "bin", "sbin", "python", "matlab", "doc"]:
+        for folder in ["share", os.path.join("lib", "python"), "sbin", "python", "matlab", "doc"]:
             shutil.rmtree(os.path.join(self.package_folder, folder), ignore_errors=True)
 
     def package_info(self):
