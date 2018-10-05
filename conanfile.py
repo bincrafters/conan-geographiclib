@@ -3,30 +3,23 @@
 
 from conans import ConanFile, CMake, tools
 import os
+import shutil
 
 
 class GeographiclibConan(ConanFile):
-    name = "GeographicLib"
+    name = "geographiclib"
     version = "1.49"
     description = "Convert geographic units and solve geodesic problems"
     url = "https://github.com/bincrafters/conan-geographiclib"
-    homepage = "https://geographiclib.sourceforge.io/"
+    homepage = "https://geographiclib.sourceforge.io"
     author = "Bincrafters <bincrafters@gmail.com>"
     license = "MIT"
-
-    # Packages the license for the conanfile.py
     exports = ["LICENSE.txt"]
-
-    # Remove following lines if the target lib does not use cmake.
     exports_sources = ["CMakeLists.txt"]
     generators = "cmake"
-
-    # Options may need to change depending on the packaged library.
     settings = "os", "arch", "compiler", "build_type"
     options = {"shared": [True, False], "fPIC": [True, False]}
     default_options = "shared=False", "fPIC=True"
-
-    # Custom attributes for Bincrafters recipe conventions
     source_subfolder = "source_subfolder"
     build_subfolder = "build_subfolder"
 
@@ -35,40 +28,34 @@ class GeographiclibConan(ConanFile):
             del self.options.fPIC
 
     def source(self):
-        source_url = "https://git.code.sf.net/p/geographiclib/code"
-        tools.download("{0}/{1}-{2}.tar.gz/download".format(
-            "https://sourceforge.net/projects/geographiclib/files/distrib",
-            self.name,
-            self.version),
-            filename="{0}-{1}.tar.gz".format(self.name, self.version)
-        )
-
-        tools.unzip("GeographicLib-{0}.tar.gz".format(self.version))
-        extracted_dir = self.name + "-" + self.version
-
-        #Rename to "source_subfolder" is a convention to simplify later steps
+        source_url = "https://sourceforge.net/projects/geographiclib/files/distrib"
+        name = "GeographicLib"
+        filename = "{0}-{1}.tar.gz".format(self.name, self.version)
+        tools.download("{0}/{1}-{2}.tar.gz".format(source_url, name, self.version), filename=filename)
+        tools.unzip(filename)
+        extracted_dir = name + '-' + self.version
         os.rename(extracted_dir, self.source_subfolder)
 
     def configure_cmake(self):
         cmake = CMake(self)
-        cmake.definitions["BUILD_TESTS"] = False # example
-        if self.settings.os != 'Windows':
-            cmake.definitions['CMAKE_POSITION_INDEPENDENT_CODE'] = self.options.fPIC
-        if self.options.shared:
-            cmake.definitions['GEOGRAPHICLIB_LIB_TYPE'] = 'SHARED'
-        else:
-            cmake.definitions['GEOGRAPHICLIB_LIB_TYPE'] = 'STATIC'
+        cmake.definitions['GEOGRAPHICLIB_LIB_TYPE'] = 'SHARED' if self.options.shared else 'STATIC'
         cmake.configure(build_folder=self.build_subfolder)
         return cmake
 
     def build(self):
+        # it does not work on Windows but is not needed
+        tools.replace_in_file(os.path.join(self.source_subfolder, "CMakeLists.txt"), "add_subdirectory (js)", "")
         cmake = self.configure_cmake()
         cmake.build()
 
     def package(self):
-        self.copy(pattern="LICENSE", dst="licenses", src=self.source_subfolder)
+        self.copy(pattern="LICENSE.txt", dst="licenses", src=self.source_subfolder)
         cmake = self.configure_cmake()
         cmake.install()
+        # there is no option to disable subdirectories
+        for folder in ["share", os.path.join("lib", "python"), "sbin", "python", "matlab", "doc"]:
+            shutil.rmtree(os.path.join(self.package_folder, folder), ignore_errors=True)
 
     def package_info(self):
         self.cpp_info.libs = tools.collect_libs(self)
+        self.cpp_info.defines.append('GEOGRAPHICLIB_SHARED_LIB={}'.format("1" if self.options.shared else "0"))
