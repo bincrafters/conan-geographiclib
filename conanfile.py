@@ -20,12 +20,12 @@ class GeographiclibConan(ConanFile):
     settings = "os", "arch", "compiler", "build_type"
     options = {"shared": [True, False], "fPIC": [True, False]}
     default_options = {"shared": False, "fPIC": True}
-    _source_subfolder = "_source_subfolder"
-    _build_subfolder = "_build_subfolder"
+    _source_subfolder = "source_subfolder"
+    _build_subfolder = "build_subfolder"
 
     def config_options(self):
         if self.settings.os == 'Windows':
-            del self.options.fPIC
+            self.options.remove("fPIC")
 
     def source(self):
         source_url = "https://sourceforge.net/projects/geographiclib/files/distrib"
