@@ -2,7 +2,7 @@
 
 | Bintray | Windows | Linux & macOS |
 |:--------:|:---------:|:-----------------:|
-|[![Download](https://api.bintray.com/packages/bincrafters/public-conan/geographiclib%3Abincrafters/images/download.svg) ](https://bintray.com/bincrafters/public-conan/geographiclib%3Abincrafters/_latestVersion)|[![Build status](https://ci.appveyor.com/api/projects/status/github/bincrafters/conan-geographiclib?svg=true)](https://ci.appveyor.com/project/BinCrafters/conan-geographiclib)|[![Build Status](https://travis-ci.org/bincrafters/conan-geographiclib.svg)](https://travis-ci.org/bincrafters/conan-geographiclib)|
+|[![Download](https://api.bintray.com/packages/bincrafters/public-conan/geographiclib%3Abincrafters/images/download.svg) ](https://bintray.com/bincrafters/public-conan/geographiclib%3Abincrafters/_latestVersion)|[![Build status](https://ci.appveyor.com/api/projects/status/github/bincrafters/conan-geographiclib?svg=true)](https://ci.appveyor.com/project/BinCrafters/conan-geographiclib)|[![Build Status](https://travis-ci.com/bincrafters/conan-geographiclib.svg)](https://travis-ci.com/bincrafters/conan-geographiclib)|
 
 ## Conan.io Information
 
