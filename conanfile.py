@@ -8,7 +8,7 @@ import shutil
 
 class GeographiclibConan(ConanFile):
     name = "geographiclib"
-    version = "1.49"
+    version = "1.50"
     description = "Convert geographic units and solve geodesic problems"
     url = "https://github.com/bincrafters/conan-geographiclib"
     homepage = "https://geographiclib.sourceforge.io"
