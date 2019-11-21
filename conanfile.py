@@ -9,7 +9,6 @@ class GeographiclibConan(ConanFile):
     description = "Convert geographic units and solve geodesic problems"
     url = "https://github.com/bincrafters/conan-geographiclib"
     homepage = "https://geographiclib.sourceforge.io"
-    author = "Bincrafters <bincrafters@gmail.com>"
     license = "MIT"
     exports = ["LICENSE.txt"]
     exports_sources = ["CMakeLists.txt"]
